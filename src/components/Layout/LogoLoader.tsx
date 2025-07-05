@@ -19,7 +19,7 @@ const LogoLoader: React.FC<LogoLoaderProps> = ({ onLoadComplete }) => {
       // Fallback: still mark as loaded even if image fails
       setLogoLoaded(true)
     }
-    logoImg.src = '/EthAgora Digital Solution Logo-01.jpg'
+    logoImg.src = '/EthAgora Digital Solution Logo-01.png'
 
     // Check if page content is loaded
     const checkContentLoaded = () => {
@@ -75,14 +75,17 @@ const LogoLoader: React.FC<LogoLoaderProps> = ({ onLoadComplete }) => {
         {/* Logo container with animation */}
         <div className='logo-loader-content'>
           {/* Logo image with fallback */}
-          <div className='logo-loader-image'>
-            <img
-              src='/EthAgora Digital Solution Logo-01.jpg'
-              alt='EthAgora Digital Solutions Logo'
-              className='logo-img'
-              loading='eager'
-              decoding='async'
-            />
+          <div className='logo-loader-image flex items-center justify-center'>
+            <div className='rounded-full bg-white p-2 shadow'>
+              <img
+                src='/favicon.jpg'
+                alt='EthAgora Digital Solutions Logo'
+                className='logo-img w-16 h-16 object-contain rounded-full'
+                loading='eager'
+                decoding='async'
+              />
+            </div>
+
             {/* Fallback logo using CSS if image fails */}
             <div className='logo-fallback' aria-hidden='true'>
               <div className='logo-icon'>

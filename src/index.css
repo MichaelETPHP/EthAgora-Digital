@@ -388,6 +388,8 @@
   border: 0;
 }
 
+/* custome CSS */
+
 .fade-bottom {
   mask-image: linear-gradient(to top, transparent 0%, black 40%);
   -webkit-mask-image: linear-gradient(to top, transparent 0%, black 40%);

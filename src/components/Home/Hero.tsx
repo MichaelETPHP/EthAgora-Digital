@@ -75,8 +75,8 @@ const Hero = () => {
             </div>
 
             <h1 className='text-4xl lg:text-6xl font-heading font-bold text-white leading-tight mb-8'>
-              Empower Your Brand with
-              <span className='block text-5xl lg:text-7xl bg-gradient-to-r from-orange-300 via-orange-400 to-orange-500 bg-clip-text text-transparent animate-gradient font-black'>
+              Empower Your Brand with <br />
+              <span className='text-5xl lg:text-7xl bg-gradient-to-r from-orange-300 via-orange-400 to-orange-500 bg-clip-text text-transparent animate-gradient font-black'>
                 EthAgora Digital
               </span>
             </h1>
