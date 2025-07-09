@@ -1,9 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { Calendar, User, ArrowRight, Tag, X, Clock, Eye } from 'lucide-react'
+import {
+  Calendar,
+  User,
+  ArrowRight,
+  Tag,
+  X,
+  Clock,
+  Eye,
+  Share2,
+  Facebook,
+  Linkedin,
+  Copy,
+  Check,
+} from 'lucide-react'
 import ParallaxHero from '../components/Shared/ParallaxHero'
 
 interface WordPressPost {
   id: number
+  slug?: string
   title: {
     rendered: string
   }
@@ -47,6 +61,7 @@ const Blog = () => {
   const [selectedPost, setSelectedPost] = useState<WordPressPost | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const [copySuccess, setCopySuccess] = useState(false)
 
   const postsPerPage = 9
 
@@ -123,6 +138,44 @@ const Blog = () => {
     return categories.filter((term) => term.taxonomy === 'category')
   }
 
+  // Social sharing functions
+  const shareToFacebook = (post: WordPressPost) => {
+    const blogUrl =
+      post.link || `${window.location.origin}/blog/${post.slug || post.id}`
+    const shareTitle = stripHtml(post.title.rendered)
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      blogUrl
+    )}&t=${encodeURIComponent(shareTitle)}`
+    window.open(facebookUrl, '_blank', 'width=600,height=400')
+  }
+
+  const shareToLinkedIn = (post: WordPressPost) => {
+    const blogUrl =
+      post.link || `${window.location.origin}/blog/${post.slug || post.id}`
+    const shareTitle = stripHtml(post.title.rendered)
+    const shareDescription = post.excerpt
+      ? stripHtml(post.excerpt.rendered).substring(0, 200) + '...'
+      : ''
+    const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+      blogUrl
+    )}&title=${encodeURIComponent(shareTitle)}&summary=${encodeURIComponent(
+      shareDescription
+    )}`
+    window.open(linkedinUrl, '_blank', 'width=600,height=400')
+  }
+
+  const copyToClipboard = async (post: WordPressPost) => {
+    try {
+      const blogUrl =
+        post.link || `${window.location.origin}/blog/${post.slug || post.id}`
+      await navigator.clipboard.writeText(blogUrl)
+      setCopySuccess(true)
+      setTimeout(() => setCopySuccess(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy: ', err)
+    }
+  }
+
   const PostModal = ({
     post,
     onClose,
@@ -156,7 +209,8 @@ const Blog = () => {
                 {getCategories(post).map((category) => (
                   <span
                     key={category.id}
-                    className='px-3 py-1 bg-orange-500 text-white text-sm font-medium rounded-full'
+                    className='px-3 py-1 text-white text-sm font-medium rounded-full'
+                    style={{ backgroundColor: '#ef610f' }}
                   >
                     {category.name}
                   </span>
@@ -170,31 +224,135 @@ const Blog = () => {
 
           {/* Content */}
           <div className='p-8'>
-            {/* Meta Info */}
-            <div className='flex items-center space-x-6 text-sm text-neutral-500 mb-8 pb-6 border-b border-neutral-200'>
-              <div className='flex items-center space-x-2'>
-                <img
-                  src={getAuthorAvatar(post)}
-                  alt={getAuthorName(post)}
-                  className='w-8 h-8 rounded-full object-cover'
-                />
-                <span>{getAuthorName(post)}</span>
+            {/* Meta Info with Social Sharing */}
+            <div className='flex items-center justify-between mb-8 pb-6 border-b border-neutral-200'>
+              <div className='flex items-center space-x-6 text-sm text-neutral-500'>
+                <div className='flex items-center space-x-2'>
+                  <img
+                    src={getAuthorAvatar(post)}
+                    alt={getAuthorName(post)}
+                    className='w-8 h-8 rounded-full object-cover'
+                  />
+                  <span>{getAuthorName(post)}</span>
+                </div>
+                <div className='flex items-center space-x-1'>
+                  <Calendar className='h-4 w-4' />
+                  <span>{formatDate(post.date)}</span>
+                </div>
+                <div className='flex items-center space-x-1'>
+                  <Clock className='h-4 w-4' />
+                  <span>{getReadingTime(post.content.rendered)}</span>
+                </div>
               </div>
-              <div className='flex items-center space-x-1'>
-                <Calendar className='h-4 w-4' />
-                <span>{formatDate(post.date)}</span>
-              </div>
-              <div className='flex items-center space-x-1'>
-                <Clock className='h-4 w-4' />
-                <span>{getReadingTime(post.content.rendered)}</span>
+
+              {/* Social Sharing Section */}
+              <div className='flex items-center space-x-3'>
+                <span className='text-sm text-neutral-500 font-medium flex items-center space-x-1'>
+                  <Share2 className='h-4 w-4' />
+                  <span>Share:</span>
+                </span>
+
+                {/* Facebook Share */}
+                <button
+                  onClick={() => shareToFacebook(post)}
+                  className='p-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors group'
+                  title='Share on Facebook'
+                >
+                  <Facebook className='h-4 w-4' />
+                </button>
+
+                {/* LinkedIn Share */}
+                <button
+                  onClick={() => shareToLinkedIn(post)}
+                  className='p-2 rounded-full bg-blue-700 hover:bg-blue-800 text-white transition-colors group'
+                  title='Share on LinkedIn'
+                >
+                  <Linkedin className='h-4 w-4' />
+                </button>
+
+                {/* Copy Link */}
+                <button
+                  onClick={() => copyToClipboard(post)}
+                  className={`p-2 rounded-full transition-colors group ${
+                    copySuccess
+                      ? 'bg-green-600 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                  }`}
+                  title={copySuccess ? 'Link copied!' : 'Copy link'}
+                >
+                  {copySuccess ? (
+                    <Check className='h-4 w-4' />
+                  ) : (
+                    <Copy className='h-4 w-4' />
+                  )}
+                </button>
               </div>
             </div>
 
             {/* Article Content */}
             <div
-              className='prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-neutral-900 prose-p:text-neutral-700 prose-p:leading-relaxed prose-a:text-orange-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-neutral-900 prose-img:rounded-lg prose-img:shadow-lg'
+              className='prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-neutral-900 prose-p:text-neutral-700 prose-p:leading-relaxed prose-a:no-underline hover:prose-a:underline prose-strong:text-neutral-900 prose-img:rounded-lg prose-img:shadow-lg'
+              style={{ '--tw-prose-links': '#ef610f' }}
               dangerouslySetInnerHTML={{ __html: post.content.rendered }}
             />
+
+            {/* Bottom Sharing Section */}
+            <div className='mt-12 pt-8 border-t border-neutral-200'>
+              <div className='flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0'>
+                <div>
+                  <h3 className='text-lg font-semibold text-neutral-900 mb-2'>
+                    Enjoyed this article?
+                  </h3>
+                  <p className='text-neutral-600 text-sm'>
+                    Share it with your network and help others discover valuable
+                    insights.
+                  </p>
+                </div>
+
+                <div className='flex items-center space-x-3'>
+                  {/* Facebook Share */}
+                  <button
+                    onClick={() => shareToFacebook(post)}
+                    className='flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors group'
+                  >
+                    <Facebook className='h-4 w-4' />
+                    <span className='text-sm font-medium'>Facebook</span>
+                  </button>
+
+                  {/* LinkedIn Share */}
+                  <button
+                    onClick={() => shareToLinkedIn(post)}
+                    className='flex items-center space-x-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg transition-colors group'
+                  >
+                    <Linkedin className='h-4 w-4' />
+                    <span className='text-sm font-medium'>LinkedIn</span>
+                  </button>
+
+                  {/* Copy Link */}
+                  <button
+                    onClick={() => copyToClipboard(post)}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors border-2 ${
+                      copySuccess
+                        ? 'bg-green-600 text-white border-green-600'
+                        : 'hover:bg-gray-50 border-gray-300'
+                    }`}
+                    style={{
+                      borderColor: copySuccess ? '#16a34a' : '#ef610f',
+                      color: copySuccess ? 'white' : '#ef610f',
+                    }}
+                  >
+                    {copySuccess ? (
+                      <Check className='h-4 w-4' />
+                    ) : (
+                      <Copy className='h-4 w-4' />
+                    )}
+                    <span className='text-sm font-medium'>
+                      {copySuccess ? 'Copied!' : 'Copy Link'}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -272,7 +430,8 @@ const Blog = () => {
                           .map((category) => (
                             <span
                               key={category.id}
-                              className='px-3 py-1 bg-orange-500 text-white text-sm font-medium rounded-full'
+                              className='px-3 py-1 text-white text-sm font-medium rounded-full'
+                              style={{ backgroundColor: '#ef610f' }}
                             >
                               {category.name}
                             </span>
@@ -308,7 +467,8 @@ const Blog = () => {
                         </span>
                         <button
                           onClick={() => setSelectedPost(post)}
-                          className='text-orange-600 font-medium text-sm hover:text-orange-700 transition-colors flex items-center group'
+                          className='font-medium text-sm hover:opacity-80 transition-colors flex items-center group'
+                          style={{ color: '#ef610f' }}
                         >
                           Read More
                           <ArrowRight className='ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform' />
@@ -341,9 +501,13 @@ const Blog = () => {
                           onClick={() => setCurrentPage(pageNum)}
                           className={`w-10 h-10 rounded-lg font-medium transition-colors ${
                             currentPage === pageNum
-                              ? 'bg-orange-500 text-white'
+                              ? 'text-white'
                               : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                           }`}
+                          style={{
+                            backgroundColor:
+                              currentPage === pageNum ? '#ef610f' : undefined,
+                          }}
                         >
                           {pageNum}
                         </button>
@@ -368,7 +532,7 @@ const Blog = () => {
       </section>
 
       {/* Newsletter Signup */}
-      <section className='py-20 bg-orange-500'>
+      <section className='py-20' style={{ backgroundColor: '#ef610f' }}>
         <div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fade-in-up'>
           <h2 className='text-3xl lg:text-4xl font-heading font-bold text-white mb-4'>
             Never Miss an Update
@@ -386,7 +550,10 @@ const Blog = () => {
                 placeholder='Enter your email address'
                 className='flex-1 px-4 py-3 border border-orange-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-white/10 text-white placeholder-orange-200'
               />
-              <button className='px-6 py-3 bg-white text-orange-600 font-medium rounded-lg hover:bg-neutral-100 transition-colors duration-200 whitespace-nowrap'>
+              <button
+                className='px-6 py-3 bg-white font-medium rounded-lg hover:bg-neutral-100 transition-colors duration-200 whitespace-nowrap'
+                style={{ color: '#ef610f' }}
+              >
                 Subscribe
               </button>
             </div>

@@ -10,6 +10,7 @@ import {
   Lightbulb,
   TrendingUp,
 } from 'lucide-react'
+import ParallaxHero from '../components/Shared/ParallaxHero'
 
 const About = () => {
   const teamMembers = [
@@ -95,29 +96,13 @@ const About = () => {
 
   return (
     <div className='min-h-screen'>
-      {/* Hero Section - Simplified */}
-      <section className='relative h-[70vh] flex items-center justify-center overflow-hidden'>
-        <div className='absolute inset-0 z-0'>
-          <img
-            src='https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1920'
-            alt='Team collaboration'
-            className='w-full h-full object-cover'
-          />
-          <div className='absolute inset-0 bg-gradient-to-r from-neutral-900/80 to-neutral-900/40'></div>
-        </div>
-
-        <div className='relative z-10 text-center max-w-4xl mx-auto px-4'>
-          <h1 className='text-5xl lg:text-7xl font-heading font-bold text-white mb-6 animate-fade-in-up'>
-            About EthAgora
-          </h1>
-          <p
-            className='text-xl lg:text-2xl text-white/90 animate-fade-in-up'
-            style={{ animationDelay: '0.2s' }}
-          >
-            Bridging Innovation and Impact in the Digital Age
-          </p>
-        </div>
-      </section>
+      {/* Hero Section with Parallax */}
+      <ParallaxHero
+        title='About EthAgora'
+        subtitle='Bridging Innovation and Impact in the Digital Age. We create digital spaces where ideas, people, and purpose converge to spark growth and transformation.'
+        backgroundImage='https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1920'
+        height='h-96'
+      />
 
       {/* Introduction with Stats */}
       <section className='py-20 bg-white relative'>
@@ -136,25 +121,37 @@ const About = () => {
           {/* Stats Grid */}
           <div className='grid grid-cols-2 lg:grid-cols-4 gap-8 mb-20'>
             <div className='text-center'>
-              <div className='text-5xl font-heading font-bold text-orange-600 mb-2'>
+              <div
+                className='text-5xl font-heading font-bold mb-2'
+                style={{ color: '#ef610f' }}
+              >
                 150+
               </div>
               <div className='text-neutral-600'>Projects Completed</div>
             </div>
             <div className='text-center'>
-              <div className='text-5xl font-heading font-bold text-orange-600 mb-2'>
+              <div
+                className='text-5xl font-heading font-bold mb-2'
+                style={{ color: '#ef610f' }}
+              >
                 50+
               </div>
               <div className='text-neutral-600'>Happy Clients</div>
             </div>
             <div className='text-center'>
-              <div className='text-5xl font-heading font-bold text-orange-600 mb-2'>
+              <div
+                className='text-5xl font-heading font-bold mb-2'
+                style={{ color: '#ef610f' }}
+              >
                 98%
               </div>
               <div className='text-neutral-600'>Client Satisfaction</div>
             </div>
             <div className='text-center'>
-              <div className='text-5xl font-heading font-bold text-orange-600 mb-2'>
+              <div
+                className='text-5xl font-heading font-bold mb-2'
+                style={{ color: '#ef610f' }}
+              >
                 5+
               </div>
               <div className='text-neutral-600'>Years Experience</div>
@@ -162,13 +159,22 @@ const About = () => {
           </div>
 
           {/* Our Name Story */}
-          <div className='bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-3xl p-12 text-center'>
+          <div
+            className='rounded-3xl p-12 text-center'
+            style={{
+              background:
+                'linear-gradient(135deg, #ef610f22 0%, #ef610f11 100%)',
+            }}
+          >
             <h3 className='text-3xl font-heading font-bold text-neutral-900 mb-6'>
               The Story Behind Our Name
             </h3>
             <div className='max-w-3xl mx-auto'>
               <p className='text-lg text-neutral-700 mb-4'>
-                <span className='text-2xl font-bold text-orange-600'>
+                <span
+                  className='text-2xl font-bold'
+                  style={{ color: '#ef610f' }}
+                >
                   EthAgora
                 </span>{' '}
                 blends "Eth" for Ethiopia and "Agora," the ancient Greek word
@@ -200,8 +206,11 @@ const About = () => {
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
             <div className='bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300'>
               <div className='flex items-start space-x-4'>
-                <div className='bg-orange-100 p-3 rounded-xl'>
-                  <Lightbulb className='h-8 w-8 text-orange-600' />
+                <div
+                  className='p-3 rounded-xl'
+                  style={{ backgroundColor: '#ef610f22' }}
+                >
+                  <Lightbulb className='h-8 w-8' style={{ color: '#ef610f' }} />
                 </div>
                 <div className='flex-1'>
                   <h3 className='text-2xl font-heading font-bold text-neutral-900 mb-4'>
@@ -219,8 +228,11 @@ const About = () => {
 
             <div className='bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300'>
               <div className='flex items-start space-x-4'>
-                <div className='bg-orange-100 p-3 rounded-xl'>
-                  <Globe className='h-8 w-8 text-orange-600' />
+                <div
+                  className='p-3 rounded-xl'
+                  style={{ backgroundColor: '#ef610f22' }}
+                >
+                  <Globe className='h-8 w-8' style={{ color: '#ef610f' }} />
                 </div>
                 <div className='flex-1'>
                   <h3 className='text-2xl font-heading font-bold text-neutral-900 mb-4'>
@@ -257,7 +269,10 @@ const About = () => {
               </div>
             </div>
 
-            <div className='bg-orange-500 text-white p-12 lg:p-16 rounded-r-3xl'>
+            <div
+              className='text-white p-12 lg:p-16 rounded-r-3xl'
+              style={{ backgroundColor: '#ef610f' }}
+            >
               <div className='max-w-lg'>
                 <h3 className='text-3xl font-heading font-bold mb-6'>
                   Our Vision
@@ -290,7 +305,10 @@ const About = () => {
             {processSteps.map((step, index) => (
               <div key={index} className='relative'>
                 <div className='bg-white rounded-2xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300'>
-                  <div className='text-6xl font-heading font-bold text-orange-100 mb-4'>
+                  <div
+                    className='text-6xl font-heading font-bold mb-4'
+                    style={{ color: '#ef610f22' }}
+                  >
                     {step.step}
                   </div>
                   <h3 className='text-xl font-heading font-bold text-neutral-900 mb-2'>
@@ -300,7 +318,10 @@ const About = () => {
                 </div>
                 {index < processSteps.length - 1 && (
                   <div className='hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2'>
-                    <ArrowRight className='h-8 w-8 text-orange-300' />
+                    <ArrowRight
+                      className='h-8 w-8'
+                      style={{ color: '#ef610f55' }}
+                    />
                   </div>
                 )}
               </div>
@@ -326,10 +347,22 @@ const About = () => {
               <div
                 key={index}
                 className='group bg-neutral-50 rounded-2xl p-8 hover:bg-orange-50 transition-all duration-300'
+                style={{
+                  '--hover-bg': '#ef610f11',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#ef610f11'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f9fafb'
+                }}
               >
                 <div className='flex items-start space-x-6'>
                   <div className='bg-white p-4 rounded-2xl shadow-md group-hover:shadow-lg transition-all duration-300'>
-                    <value.icon className='h-8 w-8 text-orange-600' />
+                    <value.icon
+                      className='h-8 w-8'
+                      style={{ color: '#ef610f' }}
+                    />
                   </div>
                   <div className='flex-1'>
                     <h3 className='text-2xl font-heading font-semibold text-neutral-900 mb-3'>
@@ -377,7 +410,7 @@ const About = () => {
                   <h3 className='text-xl font-heading font-semibold mb-1'>
                     {member.name}
                   </h3>
-                  <p className='text-orange-300 font-medium mb-2'>
+                  <p className='font-medium mb-2' style={{ color: '#ef610f' }}>
                     {member.role}
                   </p>
                   <p className='text-white/80 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
@@ -391,8 +424,12 @@ const About = () => {
       </section>
 
       {/* CTA Section - Modern Design */}
-      <section className='relative py-24 overflow-hidden'>
-        <div className='absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-600'></div>
+      <section
+        className='relative py-24 overflow-hidden'
+        style={{
+          background: 'linear-gradient(135deg, #ef610f 0%, #d45a15 100%)',
+        }}
+      >
         <div className='absolute inset-0 bg-[url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")] opacity-20'></div>
 
         <div className='relative z-10 max-w-4xl mx-auto px-4 text-center'>
@@ -404,7 +441,10 @@ const About = () => {
           </p>
 
           <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-            <button className='inline-flex items-center justify-center px-8 py-4 bg-white text-orange-600 font-semibold rounded-xl hover:bg-neutral-100 transition-all duration-200 transform hover:scale-105 shadow-xl'>
+            <button
+              className='inline-flex items-center justify-center px-8 py-4 bg-white font-semibold rounded-xl hover:bg-neutral-100 transition-all duration-200 transform hover:scale-105 shadow-xl'
+              style={{ color: '#ef610f' }}
+            >
               Start Your Journey
               <ArrowRight className='ml-2 h-5 w-5' />
             </button>
