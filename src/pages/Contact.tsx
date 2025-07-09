@@ -1,10 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Accordion from '../components/Shared/Accordion'
 import { Mail, Phone, MapPin, Clock, Send, MessageSquare } from 'lucide-react'
 import ParallaxHero from '../components/Shared/ParallaxHero'
 
+import { useLocation } from 'react-router-dom'
+
 const Contact = () => {
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const location = useLocation()
+  const firstNameRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (
+      location.state &&
+      location.state.focusFirstName &&
+      firstNameRef.current
+    ) {
+      setTimeout(() => {
+        firstNameRef.current?.focus()
+      }, 200) // slight delay to ensure render
+    }
+  }, [location])
 
   // 🔑 Store your Bot Token and Chat ID here
   const botToken = '7778748542:AAHn4TDIXS3XAd7w8bg32BrjxIc5c2-eZE4'
@@ -148,6 +164,7 @@ ${data.message}
                         id='firstName'
                         name='firstName'
                         required
+                        ref={firstNameRef}
                         className='w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all'
                         placeholder='John'
                       />
