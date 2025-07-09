@@ -97,10 +97,70 @@ const Hero = () => {
                 </span>
               </Link>
 
-              <button className='group inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-full hover:bg-white/10 hover:border-white/50 transition-all duration-300 backdrop-blur-md shadow-glass'>
-                <Play className='mr-2 h-5 w-5 group-hover:scale-110 transition-transform' />
-                Watch Demo
-              </button>
+              {/* Video Modal State & Handler */}
+              {(() => {
+                const [open, setOpen] = React.useState(false)
+                return (
+                  <>
+                    <button
+                      className='group inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-full hover:bg-white/10 hover:border-white/50 transition-all duration-300 backdrop-blur-md shadow-glass'
+                      onClick={() => setOpen(true)}
+                    >
+                      <Play className='mr-2 h-5 w-5 group-hover:scale-110 transition-transform' />
+                      Watch Demo
+                    </button>
+                    {open && (
+                      <div
+                        className='fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-all duration-300'
+                        style={{ animation: 'fadeIn .3s' }}
+                      >
+                        <div
+                          className='absolute inset-0'
+                          onClick={() => setOpen(false)}
+                        />
+                        <div className='relative z-10 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-gradient-to-br from-black via-slate-900 to-black animate-fade-in-up p-2 sm:p-4'>
+                          <button
+                            className='absolute top-2 right-2 z-20 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-lg'
+                            onClick={() => setOpen(false)}
+                            aria-label='Close video modal'
+                          >
+                            <svg
+                              width='22'
+                              height='22'
+                              fill='none'
+                              stroke='currentColor'
+                              strokeWidth='2'
+                              viewBox='0 0 24 24'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                d='M6 18L18 6M6 6l12 12'
+                              />
+                            </svg>
+                          </button>
+                          <div className='rounded-2xl overflow-hidden border border-white/10 shadow-xl bg-black/90'>
+                            <iframe
+                              src='https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0&showinfo=0&modestbranding=1'
+                              title='Demo Video'
+                              allow='autoplay; encrypted-media'
+                              allowFullScreen
+                              className='w-[320px] h-[180px] sm:w-[400px] sm:h-[225px] md:w-[480px] md:h-[270px] lg:w-[560px] lg:h-[315px] border-none rounded-2xl bg-black'
+                              style={{
+                                boxShadow:
+                                  '0 4px 32px 0 #f9731622, 0 1.5px 8px 0 #fff2',
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <style>{`
+                        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+                      `}</style>
+                      </div>
+                    )}
+                  </>
+                )
+              })()}
             </div>
 
             {/* Stats */}
