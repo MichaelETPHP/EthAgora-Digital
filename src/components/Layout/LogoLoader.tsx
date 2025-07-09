@@ -1,269 +1,211 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 interface LogoLoaderProps {
   onLoadComplete?: () => void
 }
 
+const SNOWFLAKE_COUNT = 40
+
 const LogoLoader: React.FC<LogoLoaderProps> = ({ onLoadComplete }) => {
   const [isLoading, setIsLoading] = useState(true)
-  const [logoLoaded, setLogoLoaded] = useState(false)
-  const [contentLoaded, setContentLoaded] = useState(false)
+  const [fadeOut, setFadeOut] = useState(false)
   const [progress, setProgress] = useState(0)
-  const [currentText, setCurrentText] = useState(0)
+  const snowRef = useRef<HTMLCanvasElement>(null)
 
-  const loadingTexts = [
-    'Initializing Digital Solutions...',
-    'Crafting Your Experience...',
-    'Loading Innovation...',
-    'Almost Ready...',
-  ]
-
+  // Minimal loading simulation
   useEffect(() => {
-    // Simulate realistic loading progress
-    const progressInterval = setInterval(() => {
+    const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
-          clearInterval(progressInterval)
+          clearInterval(interval)
           return 100
         }
-        // Slower start, faster middle, slower end (realistic loading curve)
-        const increment = prev < 20 ? 2 : prev < 80 ? 4 : 1
-        return Math.min(prev + increment, 100)
+        return prev + (prev < 80 ? 3 : 1)
       })
-    }, 50)
+    }, 40)
+    return () => clearInterval(interval)
+  }, [])
 
-    // Cycle through loading texts
-    const textInterval = setInterval(() => {
-      setCurrentText((prev) => (prev + 1) % loadingTexts.length)
-    }, 800)
+  // Fade out when loading is done
+  useEffect(() => {
+    if (progress >= 100) {
+      setTimeout(() => setFadeOut(true), 300)
+      setTimeout(() => {
+        setIsLoading(false)
+        if (onLoadComplete) onLoadComplete()
+      }, 900)
+    }
+  }, [progress, onLoadComplete])
 
-    // Preload the logo image
-    const logoImg = new Image()
-    logoImg.onload = () => setLogoLoaded(true)
-    logoImg.onerror = () => setLogoLoaded(true)
-    logoImg.src = '/EthAgora Digital Solution Logo-01.png'
+  // Snowfall/particle animation
+  useEffect(() => {
+    const canvas = snowRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
 
-    // Check if page content is loaded
-    const checkContentLoaded = () => {
-      if (document.readyState === 'complete') {
-        setContentLoaded(true)
+    let width = window.innerWidth
+    let height = window.innerHeight
+    canvas.width = width
+    canvas.height = height
+
+    let snowflakes = Array.from({ length: SNOWFLAKE_COUNT }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: 1.2 + Math.random() * 1.8,
+      d: 0.5 + Math.random() * 1.5,
+      o: 0.08 + Math.random() * 0.12,
+      s: 0.5 + Math.random() * 0.7,
+    }))
+
+    let animationFrame: number
+    function draw() {
+      ctx.clearRect(0, 0, width, height)
+      for (let flake of snowflakes) {
+        ctx.beginPath()
+        ctx.arc(flake.x, flake.y, flake.r, 0, 2 * Math.PI)
+        ctx.fillStyle = `rgba(255,255,255,${flake.o})`
+        ctx.shadowColor = '#fff'
+        ctx.shadowBlur = 6
+        ctx.fill()
+        ctx.shadowBlur = 0
+      }
+      update()
+      animationFrame = requestAnimationFrame(draw)
+    }
+    function update() {
+      for (let flake of snowflakes) {
+        flake.y += flake.d
+        flake.x += Math.sin(flake.y / 30) * flake.s
+        if (flake.y > height + 4) {
+          flake.y = -4
+          flake.x = Math.random() * width
+        }
       }
     }
-
-    if (document.readyState === 'complete') {
-      setContentLoaded(true)
-    } else {
-      window.addEventListener('load', checkContentLoaded)
+    draw()
+    function handleResize() {
+      width = window.innerWidth
+      height = window.innerHeight
+      canvas.width = width
+      canvas.height = height
     }
-
+    window.addEventListener('resize', handleResize)
     return () => {
-      clearInterval(progressInterval)
-      clearInterval(textInterval)
-      window.removeEventListener('load', checkContentLoaded)
+      cancelAnimationFrame(animationFrame)
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 
-  useEffect(() => {
-    if (logoLoaded && contentLoaded && progress >= 100) {
-      const timer = setTimeout(() => {
-        setIsLoading(false)
-        if (onLoadComplete) {
-          onLoadComplete()
-        }
-      }, 500)
-
-      return () => clearTimeout(timer)
-    }
-  }, [logoLoaded, contentLoaded, progress, onLoadComplete])
-
-  if (!isLoading) {
-    return null
-  }
+  if (!isLoading) return null
 
   return (
     <div
-      className='fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-slate-900 via-gray-900 to-black overflow-hidden'
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black overflow-hidden transition-opacity duration-700 ${
+        fadeOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      }`}
       style={{
         background:
-          'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #0a0a0a 100%)',
+          'radial-gradient(ellipse at 60% 40%, #181818 0%, #000 100%)',
       }}
     >
-      {/* Animated background particles */}
-      <div className='absolute inset-0 overflow-hidden'>
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className='absolute w-2 h-2 bg-white rounded-full opacity-20 animate-pulse'
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 2}s`,
-            }}
-          />
-        ))}
-      </div>
+      {/* Snowfall/particle background */}
+      <canvas
+        ref={snowRef}
+        className='absolute inset-0 w-full h-full block pointer-events-none select-none'
+        style={{ zIndex: 1 }}
+        aria-hidden='true'
+      />
 
-      {/* Floating geometric shapes */}
-      <div className='absolute inset-0 overflow-hidden'>
-        <div
-          className='absolute top-1/4 left-1/4 w-20 h-20 border-2 border-white/10 rounded-full animate-spin'
-          style={{ animationDuration: '10s' }}
-        />
-        <div
-          className='absolute bottom-1/4 right-1/4 w-16 h-16 border-2 rotate-45 animate-pulse'
-          style={{ borderColor: '#ef610f33' }}
-        />
-        <div
-          className='absolute top-1/3 right-1/3 w-12 h-12 rounded-full animate-bounce'
-          style={{
-            background: 'linear-gradient(135deg, #ef610f33 0%, #ef610f55 100%)',
-          }}
-        />
-      </div>
-
-      {/* Main loader container */}
-      <div className='relative z-10 text-center'>
-        {/* Logo container with enhanced animations */}
-        <div className='relative mb-8'>
-          {/* Outer glow ring */}
-          <div
-            className='absolute inset-0 rounded-full opacity-20 animate-pulse scale-150'
+      {/* Centered minimalist orange spinner */}
+      <div className='relative z-10 flex flex-col items-center justify-center'>
+        <div className='flex items-center justify-center'>
+          <span
+            className='block'
             style={{
-              background:
-                'linear-gradient(135deg, #ef610f 0%, #ef610f 50%, #ef610f 100%)',
-            }}
-          />
-
-          {/* Rotating border */}
-          <div
-            className='absolute inset-0 rounded-full border-4 border-transparent animate-spin'
-            style={{
-              background:
-                'linear-gradient(135deg, #ef610f 0%, #ef610f 50%, #ef610f 100%)',
-              animationDuration: '3s',
+              width: 64,
+              height: 64,
+              display: 'inline-block',
+              borderRadius: '50%',
+              boxShadow: '0 0 24px 2px #f9731655',
+              background: 'rgba(0,0,0,0.08)',
             }}
           >
-            <div
-              className='absolute inset-1 rounded-full'
-              style={{
-                background:
-                  'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #0a0a0a 100%)',
-              }}
-            />
-          </div>
-
-          {/* Logo */}
-          <div className='relative w-24 h-24 mx-auto rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center transform transition-transform duration-300 hover:scale-110'>
-            <img
-              src='/favicon.jpg'
-              alt='EthAgora Digital Solutions'
-              className='w-16 h-16 object-contain rounded-full'
-              loading='eager'
-              decoding='async'
-            />
-          </div>
-
-          {/* Pulse waves */}
-          <div className='absolute inset-0 rounded-full border-2 border-white/30 animate-ping' />
-          <div
-            className='absolute inset-0 rounded-full border-2 animate-ping'
-            style={{ borderColor: '#ef610f55', animationDelay: '0.5s' }}
-          />
-        </div>
-
-        {/* Brand name with typewriter effect */}
-        <div className='mb-8'>
-          <h1 className='text-4xl md:text-5xl font-bold text-white mb-2 tracking-wide'>
-            <span
-              className='bg-clip-text text-transparent'
-              style={{
-                background:
-                  'linear-gradient(135deg, #ef610f 0%, #ff7f20 50%, #ef610f 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
+            <svg
+              width='64'
+              height='64'
+              viewBox='0 0 64 64'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'
+              style={{ display: 'block' }}
+              aria-label='Loading'
             >
-              EthAgora
-            </span>
-          </h1>
-          <p className='text-lg text-white/80 font-light tracking-wider'>
-            DIGITAL SOLUTIONS
-          </p>
+              <circle
+                cx='32'
+                cy='32'
+                r='26'
+                stroke='#f97316'
+                strokeWidth='6'
+                opacity='0.15'
+              />
+              <circle
+                cx='32'
+                cy='32'
+                r='26'
+                stroke='#f97316'
+                strokeWidth='6'
+                strokeLinecap='round'
+                strokeDasharray='120 60'
+                style={
+                  {
+                    filter: 'drop-shadow(0 0 8px #f9731688)',
+                    transition: 'stroke-dashoffset 0.3s',
+                    animation: 'spin 1.1s cubic-bezier(.6,.2,.4,1) infinite',
+                    transformOrigin: 'center',
+                  } as React.CSSProperties
+                }
+              />
+              <style>{`
+                @keyframes spin {
+                  100% { transform: rotate(360deg); }
+                }
+              `}</style>
+            </svg>
+          </span>
+        </div>
+        {/* Progress text (optional, minimalist) */}
+        <div className='mt-6 text-center'>
+          <span
+            className='text-white/70 text-xs tracking-widest font-light'
+            style={{ letterSpacing: 2 }}
+          >
+            Loading... {progress}%
+          </span>
         </div>
 
-        {/* Dynamic loading text */}
-        <div className='mb-8 h-6'>
-          <p className='text-white/90 text-sm md:text-base font-medium transition-opacity duration-300'>
-            {loadingTexts[currentText]}
-          </p>
-        </div>
-
-        {/* Enhanced progress bar */}
-        <div className='w-80 max-w-sm mx-auto mb-6'>
-          <div className='relative h-2 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm'>
-            {/* Background glow */}
-            <div
-              className='absolute inset-0 rounded-full'
-              style={{
-                background:
-                  'linear-gradient(135deg, #ef610f22 0%, #ef610f33 50%, #ef610f22 100%)',
-              }}
-            />
-
-            {/* Progress fill */}
-            <div
-              className='absolute left-0 top-0 h-full rounded-full transition-all duration-300 ease-out'
-              style={{
-                width: `${progress}%`,
-                background:
-                  'linear-gradient(135deg, #ef610f 0%, #ff7f20 50%, #ef610f 100%)',
-              }}
-            />
-
-            {/* Shimmer effect */}
-            <div
-              className='absolute top-0 h-full w-20 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-full animate-pulse'
-              style={{
-                left: `${Math.max(0, progress - 20)}%`,
-                transition: 'left 0.3s ease-out',
-              }}
-            />
-          </div>
-
-          {/* Progress percentage */}
-          <div className='flex justify-between items-center mt-2'>
-            <span className='text-white/60 text-xs'>Loading...</span>
-            <span className='text-white/90 text-sm font-medium'>
-              {progress}%
-            </span>
-          </div>
-        </div>
-
-        {/* Interactive loading spinner */}
-        <div className='relative w-12 h-12 mx-auto'>
-          <div className='absolute inset-0 rounded-full border-4 border-white/20' />
-          <div
-            className='absolute inset-0 rounded-full border-4 border-transparent animate-spin'
-            style={{ borderTopColor: '#ef610f' }}
-          />
-          <div
-            className='absolute inset-2 rounded-full border-2 border-transparent animate-spin'
+        {/* Animated EthAgora Digital text with background gradient animation */}
+        <div className='mt-8'>
+          <h1
+            className='text-3xl md:text-4xl font-bold tracking-wide relative inline-block'
             style={{
-              borderTopColor: '#ef610f',
-              animationDirection: 'reverse',
-              animationDuration: '1.5s',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              backgroundImage:
+                'linear-gradient(270deg, #f97316, #fff, #f97316, #181818, #f97316)',
+              backgroundSize: '200% 200%',
+              animation: 'ethagora-gradient-move 3s ease-in-out infinite',
             }}
-          />
-        </div>
-
-        {/* Floating action hint */}
-        <div className='absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60 text-xs animate-bounce'>
-          <div className='flex items-center gap-2'>
-            <div className='w-2 h-2 bg-white/40 rounded-full animate-pulse' />
-            <span>Preparing your digital experience</span>
-            <div className='w-2 h-2 bg-white/40 rounded-full animate-pulse' />
-          </div>
+          >
+            EthAgora Digital
+          </h1>
+          <style>{`
+            @keyframes ethagora-gradient-move {
+              0% { background-position: 0% 50%; }
+              50% { background-position: 100% 50%; }
+              100% { background-position: 0% 50%; }
+            }
+          `}</style>
         </div>
       </div>
 
