@@ -14,6 +14,7 @@ import {
   Heart,
   MessageSquare,
 } from 'lucide-react'
+import CookieConsentBanner from './CookieConsentBanner'
 
 // FloatingChat: Modern floating chat button with flip/expand animation
 function FloatingChat() {
@@ -104,7 +105,6 @@ const Footer = () => {
       <div className='absolute inset-0 opacity-5'>
         <div className='absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-500/10 to-orange-600/10'></div>
       </div>
-
       <div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         {/* Main Footer Content */}
         <div className='py-16'>
@@ -308,6 +308,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      {/* Cookie Consent Banner */}
+      <CookieConsentBanner />
     </footer>
   )
 }
