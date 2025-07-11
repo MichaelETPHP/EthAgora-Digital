@@ -1,0 +1,45 @@
+{
+  "name": "EthAgora Digital Solutions",
+  "short_name": "EthAgora",
+  "description": "Smart Solutions for a Digital World - Comprehensive digital marketing, brand strategy, and communication solutions",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f6971f",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["business", "marketing", "communication"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/EthAgora Digital Solution Logo-01.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/EthAgora Digital Solution Logo-01.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+} 

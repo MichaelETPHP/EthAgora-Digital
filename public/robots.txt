@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap locations
+Sitemap: https://ethagora-digital.vercel.app/sitemap.xml
+Sitemap: https://ethagora-digital.vercel.app/sitemap-index.xml
+
+# Crawl delay (optional)
+Crawl-delay: 1 
