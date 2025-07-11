@@ -9,6 +9,9 @@ import Services from './pages/Services'
 import Resources from './pages/Resources'
 import Blog from './pages/Blog'
 import Contact from './pages/Contact'
+import NotFound from './pages/NotFound'
+
+
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
@@ -29,18 +32,81 @@ function App() {
             isLoading ? 'opacity-0' : 'opacity-100'
           }`}
         >
-          <Header />
-          <main>
-            <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/about' element={<About />} />
-              <Route path='/services' element={<Services />} />
-              <Route path='/resources' element={<Resources />} />
-              <Route path='/blog' element={<Blog />} />
-              <Route path='/contact' element={<Contact />} />
-            </Routes>
-          </main>
-          <Footer />
+          <Routes>
+            <Route
+              path='/'
+              element={
+                <>
+                  <Header />
+                  <main>
+                    <Home />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path='/about'
+              element={
+                <>
+                  <Header />
+                  <main>
+                    <About />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path='/services'
+              element={
+                <>
+                  <Header />
+                  <main>
+                    <Services />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path='/resources'
+              element={
+                <>
+                  <Header />
+                  <main>
+                    <Resources />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path='/blog'
+              element={
+                <>
+                  <Header />
+                  <main>
+                    <Blog />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path='/contact'
+              element={
+                <>
+                  <Header />
+                  <main>
+                    <Contact />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
         </div>
       </div>
     </Router>
