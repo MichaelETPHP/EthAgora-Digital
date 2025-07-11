@@ -108,6 +108,9 @@ const About = () => {
       <section className='py-20 bg-white relative'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='text-center mb-16'>
+            <div className='inline-block bg-orange-100 text-orange-700 px-6 py-2 rounded-full text-sm font-medium mb-6'>
+              Smart Solutions for a Digital World
+            </div>
             <h2 className='text-4xl lg:text-5xl font-heading font-bold text-neutral-900 mb-6'>
               We Create Digital Spaces Where Ideas Thrive
             </h2>
@@ -123,7 +126,7 @@ const About = () => {
             <div className='text-center'>
               <div
                 className='text-5xl font-heading font-bold mb-2'
-                style={{ color: '#ef610f' }}
+                style={{ color: '#f6971f' }}
               >
                 150+
               </div>
@@ -132,7 +135,7 @@ const About = () => {
             <div className='text-center'>
               <div
                 className='text-5xl font-heading font-bold mb-2'
-                style={{ color: '#ef610f' }}
+                style={{ color: '#f6971f' }}
               >
                 50+
               </div>
@@ -141,7 +144,7 @@ const About = () => {
             <div className='text-center'>
               <div
                 className='text-5xl font-heading font-bold mb-2'
-                style={{ color: '#ef610f' }}
+                style={{ color: '#f6971f' }}
               >
                 98%
               </div>
@@ -150,7 +153,7 @@ const About = () => {
             <div className='text-center'>
               <div
                 className='text-5xl font-heading font-bold mb-2'
-                style={{ color: '#ef610f' }}
+                style={{ color: '#f6971f' }}
               >
                 5+
               </div>
@@ -208,9 +211,9 @@ const About = () => {
               <div className='flex items-start space-x-4'>
                 <div
                   className='p-3 rounded-xl'
-                  style={{ backgroundColor: '#ef610f22' }}
+                  style={{ backgroundColor: '#f6971f22' }}
                 >
-                  <Lightbulb className='h-8 w-8' style={{ color: '#ef610f' }} />
+                  <Lightbulb className='h-8 w-8' style={{ color: '#f6971f' }} />
                 </div>
                 <div className='flex-1'>
                   <h3 className='text-2xl font-heading font-bold text-neutral-900 mb-4'>
@@ -230,9 +233,9 @@ const About = () => {
               <div className='flex items-start space-x-4'>
                 <div
                   className='p-3 rounded-xl'
-                  style={{ backgroundColor: '#ef610f22' }}
+                  style={{ backgroundColor: '#f6971f22' }}
                 >
-                  <Globe className='h-8 w-8' style={{ color: '#ef610f' }} />
+                  <Globe className='h-8 w-8' style={{ color: '#f6971f' }} />
                 </div>
                 <div className='flex-1'>
                   <h3 className='text-2xl font-heading font-bold text-neutral-900 mb-4'>
@@ -271,16 +274,16 @@ const About = () => {
 
             <div
               className='text-white p-12 lg:p-16 rounded-r-3xl'
-              style={{ backgroundColor: '#ef610f' }}
+              style={{ backgroundColor: '#f6971f' }}
             >
               <div className='max-w-lg'>
                 <h3 className='text-3xl font-heading font-bold mb-6'>
                   Our Vision
                 </h3>
                 <p className='text-orange-100 text-lg leading-relaxed'>
-                  To be a leading digital communication agency that empowers
-                  brands and organizations with innovative, data-driven
-                  strategies to maximize impact.
+                  To guide organizations and businesses through the evolving
+                  digital landscape with communication that informs, inspires,
+                  and drives real-world outcomes.
                 </p>
               </div>
             </div>
@@ -296,36 +299,123 @@ const About = () => {
               Our Flawless Process
             </h2>
             <p className='text-xl text-neutral-600'>
-              At EthAgora, we follow a process that turns strategy into
-              measurable success
+              Every project follows a proven, collaborative journey from vision
+              to results.
             </p>
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
-            {processSteps.map((step, index) => (
-              <div key={index} className='relative'>
-                <div className='bg-white rounded-2xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300'>
-                  <div
-                    className='text-6xl font-heading font-bold mb-4'
-                    style={{ color: '#ef610f22' }}
-                  >
-                    {step.step}
-                  </div>
-                  <h3 className='text-xl font-heading font-bold text-neutral-900 mb-2'>
-                    {step.title}
-                  </h3>
-                  <p className='text-neutral-600'>{step.desc}</p>
+            {/* Custom process steps with notes */}
+            <div className='relative'>
+              <div className='bg-white rounded-2xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300'>
+                <div
+                  className='text-6xl font-heading font-bold mb-4'
+                  style={{ color: '#f6971f22' }}
+                >
+                  01
                 </div>
-                {index < processSteps.length - 1 && (
-                  <div className='hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2'>
-                    <ArrowRight
-                      className='h-8 w-8'
-                      style={{ color: '#ef610f55' }}
-                    />
-                  </div>
-                )}
+                <h3 className='text-xl font-heading font-bold text-neutral-900 mb-2'>
+                  Discovery
+                </h3>
+                <p className='text-neutral-600 mb-2'>
+                  Understanding your unique needs and goals
+                </p>
+                <p className='text-sm text-neutral-500'>
+                  This is where it all begins. In the discovery phase, we take
+                  the time to deeply understand your brand, goals, audience, and
+                  pain points. Through collaborative discussions and research,
+                  we uncover insights that lay the foundation for a strategy
+                  aligned with your vision and market needs.
+                </p>
               </div>
-            ))}
+              <div className='hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2'>
+                <ArrowRight
+                  className='h-8 w-8'
+                  style={{ color: '#f6971f55' }}
+                />
+              </div>
+            </div>
+            <div className='relative'>
+              <div className='bg-white rounded-2xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300'>
+                <div
+                  className='text-6xl font-heading font-bold mb-4'
+                  style={{ color: '#f6971f22' }}
+                >
+                  02
+                </div>
+                <h3 className='text-xl font-heading font-bold text-neutral-900 mb-2'>
+                  Strategy
+                </h3>
+                <p className='text-neutral-600 mb-2'>
+                  Crafting tailored digital solutions
+                </p>
+                <p className='text-sm text-neutral-500'>
+                  With clarity from the discovery phase, we craft a custom
+                  digital strategy tailored to your brand’s unique challenges
+                  and objectives. Whether it's a social media campaign, content
+                  roadmap, or full digital transformation, we design scalable
+                  and data-informed solutions that position you for success.
+                </p>
+              </div>
+              <div className='hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2'>
+                <ArrowRight
+                  className='h-8 w-8'
+                  style={{ color: '#f6971f55' }}
+                />
+              </div>
+            </div>
+            <div className='relative'>
+              <div className='bg-white rounded-2xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300'>
+                <div
+                  className='text-6xl font-heading font-bold mb-4'
+                  style={{ color: '#f6971f22' }}
+                >
+                  03
+                </div>
+                <h3 className='text-xl font-heading font-bold text-neutral-900 mb-2'>
+                  Execution
+                </h3>
+                <p className='text-neutral-600 mb-2'>
+                  Implementing with precision and creativity
+                </p>
+                <p className='text-sm text-neutral-500'>
+                  Ideas come to life in this phase. Our team brings the strategy
+                  to action—developing engaging content, launching campaigns,
+                  and managing digital platforms with precision and creativity.
+                  We focus on quality, timeliness, and impact to ensure your
+                  brand makes a powerful impression.
+                </p>
+              </div>
+              <div className='hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2'>
+                <ArrowRight
+                  className='h-8 w-8'
+                  style={{ color: '#f6971f55' }}
+                />
+              </div>
+            </div>
+            <div className='relative'>
+              <div className='bg-white rounded-2xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300'>
+                <div
+                  className='text-6xl font-heading font-bold mb-4'
+                  style={{ color: '#f6971f22' }}
+                >
+                  04
+                </div>
+                <h3 className='text-xl font-heading font-bold text-neutral-900 mb-2'>
+                  Analysis
+                </h3>
+                <p className='text-neutral-600 mb-2'>
+                  Measuring impact and optimizing results
+                </p>
+                <p className='text-sm text-neutral-500'>
+                  We don’t just launch and leave. In the analysis phase, we
+                  track performance, measure impact, and gather actionable
+                  insights. By analyzing results in real time, we refine our
+                  approach and optimize for continuous improvement—so you get
+                  better returns, every step of the way.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -361,7 +451,7 @@ const About = () => {
                   <div className='bg-white p-4 rounded-2xl shadow-md group-hover:shadow-lg transition-all duration-300'>
                     <value.icon
                       className='h-8 w-8'
-                      style={{ color: '#ef610f' }}
+                      style={{ color: '#f6971f' }}
                     />
                   </div>
                   <div className='flex-1'>
@@ -384,41 +474,52 @@ const About = () => {
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='text-center mb-16'>
             <h2 className='text-3xl lg:text-4xl font-heading font-bold text-neutral-900 mb-4'>
-              Meet Our Expert Team
+              Our Team
             </h2>
             <p className='text-xl text-neutral-600 max-w-3xl mx-auto'>
-              Passionate professionals dedicated to your success
+              For the time being, we will display only positions until all
+              requirements are completed/filled.
             </p>
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
-            {teamMembers.map((member, index) => (
-              <div
-                key={index}
-                className='group relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300'
+            {/* Display only positions with emoji icons */}
+            <div className='flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-8'>
+              <span className='text-6xl mb-4'>👨‍💼</span>
+              <p
+                className='font-heading font-bold text-neutral-900 mb-2'
+                style={{ color: '#f6971f' }}
               >
-                <div className='aspect-w-3 aspect-h-4'>
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className='w-full h-80 object-cover group-hover:scale-110 transition-transform duration-300'
-                  />
-                  <div className='absolute inset-0 bg-gradient-to-t from-neutral-900/80 via-neutral-900/20 to-transparent'></div>
-                </div>
-
-                <div className='absolute bottom-0 left-0 right-0 p-6 text-white'>
-                  <h3 className='text-xl font-heading font-semibold mb-1'>
-                    {member.name}
-                  </h3>
-                  <p className='font-medium mb-2' style={{ color: '#ef610f' }}>
-                    {member.role}
-                  </p>
-                  <p className='text-white/80 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
-                    {member.bio}
-                  </p>
-                </div>
-              </div>
-            ))}
+                CEO & Founder
+              </p>
+            </div>
+            <div className='flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-8'>
+              <span className='text-6xl mb-4'>🎨</span>
+              <p
+                className='font-heading font-bold text-neutral-900 mb-2'
+                style={{ color: '#f6971f' }}
+              >
+                Creative Director
+              </p>
+            </div>
+            <div className='flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-8'>
+              <span className='text-6xl mb-4'>📊</span>
+              <p
+                className='font-heading font-bold text-neutral-900 mb-2'
+                style={{ color: '#f6971f' }}
+              >
+                Head of Analytics
+              </p>
+            </div>
+            <div className='flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-8'>
+              <span className='text-6xl mb-4'>🤝</span>
+              <p
+                className='font-heading font-bold text-neutral-900 mb-2'
+                style={{ color: '#f6971f' }}
+              >
+                Community Manager
+              </p>
+            </div>
           </div>
         </div>
       </section>

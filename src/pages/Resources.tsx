@@ -7,6 +7,8 @@ import {
   ArrowRight,
   FileAudio2,
   FileVideo2,
+  ChevronDown,
+  ChevronRight,
 } from 'lucide-react'
 import ParallaxHero from '../components/Shared/ParallaxHero'
 
@@ -14,6 +16,12 @@ const Resources = () => {
   const [resources, setResources] = React.useState<any[]>([])
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState<string | null>(null)
+  const [expandedCategory, setExpandedCategory] = React.useState<string | null>(
+    'PDF'
+  )
+  const [expandedSubcategory, setExpandedSubcategory] = React.useState<
+    string | null
+  >(null)
 
   React.useEffect(() => {
     setLoading(true)
@@ -41,12 +49,36 @@ const Resources = () => {
   }
 
   const categories = [
-    { name: 'All', value: 'All' },
-    { name: 'PDFs', value: 'PDF' },
-    { name: 'Audio', value: 'Audio' },
-    { name: 'Video', value: 'Video' },
+    {
+      name: 'PDF',
+      value: 'PDF',
+      icon: FileText,
+      color: 'bg-orange-500',
+      subcategories: [
+        {
+          name: 'Digital Marketing Toolkits',
+          value: 'digital-marketing-toolkits',
+        },
+        { name: 'Behavior Change Communication (BCC)', value: 'bcc' },
+        { name: 'Training & Capacity Building', value: 'training' },
+        { name: 'FAQs', value: 'faqs' },
+      ],
+    },
+    {
+      name: 'Audio',
+      value: 'Audio',
+      icon: FileAudio2,
+      color: 'bg-blue-500',
+      subcategories: [],
+    },
+    {
+      name: 'Video',
+      value: 'Video',
+      icon: FileVideo2,
+      color: 'bg-green-500',
+      subcategories: [],
+    },
   ]
-  const [activeType, setActiveType] = React.useState('All')
 
   const getTypeColor = (type: string) => {
     switch (type) {
@@ -61,6 +93,21 @@ const Resources = () => {
     }
   }
 
+  const toggleCategory = (categoryValue: string) => {
+    setExpandedCategory(
+      expandedCategory === categoryValue ? null : categoryValue
+    )
+    if (expandedCategory !== categoryValue) {
+      setExpandedSubcategory(null)
+    }
+  }
+
+  const toggleSubcategory = (subcategoryValue: string) => {
+    setExpandedSubcategory(
+      expandedSubcategory === subcategoryValue ? null : subcategoryValue
+    )
+  }
+
   return (
     <div className='min-h-screen'>
       {/* Hero Section with Parallax */}
@@ -71,30 +118,9 @@ const Resources = () => {
         height='h-96'
       />
 
-      {/* Categories Filter */}
-      <section className='py-12 bg-white border-b border-neutral-200'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex flex-wrap justify-center gap-4 animate-fade-in-up'>
-            {categories.map((category, index) => (
-              <button
-                key={index}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
-                  activeType === category.value
-                    ? 'bg-orange-500 text-white'
-                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
-                }`}
-                onClick={() => setActiveType(category.value)}
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Resources Grid */}
+      {/* Accordion Categories */}
       <section className='py-20 bg-white'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8'>
           {loading ? (
             <div className='flex flex-col items-center justify-center py-20'>
               <span className='inline-block mb-4'>
@@ -128,96 +154,475 @@ const Resources = () => {
               Failed to load resources: {error}
             </div>
           ) : (
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-              {resources
-                .filter((resource) => {
+            <div className='space-y-4'>
+              {categories.map((category, index) => {
+                const Icon = category.icon
+                const isExpanded = expandedCategory === category.value
+                const categoryResources = resources.filter((resource) => {
                   const { type } = mimeTypeToType(resource.mime_type || '')
-                  return activeType === 'All' || type === activeType
+                  return type === category.value
                 })
-                .map((resource, index) => {
-                  const { type, icon: Icon } = mimeTypeToType(
-                    resource.mime_type || ''
-                  )
-                  return (
-                    <div
-                      key={resource.id || index}
-                      className='bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up'
-                      style={{ animationDelay: `${index * 0.1}s` }}
+
+                return (
+                  <div
+                    key={category.value}
+                    className='border border-neutral-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300'
+                  >
+                    {/* Category Header */}
+                    <button
+                      onClick={() => toggleCategory(category.value)}
+                      className='w-full px-6 py-4 bg-neutral-50 hover:bg-neutral-100 transition-all duration-200 flex items-center justify-between text-left'
                     >
-                      {/* Thumbnail, AI description, or video thumbnail */}
-                      <div className='relative h-48 overflow-hidden bg-neutral-100 flex items-center justify-center'>
-                        {resource.media_type === 'image' ? (
-                          <img
-                            src={resource.source_url}
-                            alt={resource.title?.rendered || 'Resource'}
-                            className='w-full h-full object-cover'
-                          />
-                        ) : resource.media_type === 'video' ? (
-                          // Show video thumbnail if available, else fallback
-                          resource?.media_details?.image_meta?.thumb ? (
-                            <img
-                              src={resource.media_details.image_meta.thumb}
-                              alt={
-                                resource.title?.rendered || 'Video thumbnail'
-                              }
-                              className='w-full h-full object-cover'
-                            />
-                          ) : (
-                            <div className='flex flex-col items-center justify-center w-full h-full'>
-                              <FileVideo2 className='h-16 w-16 text-orange-400 opacity-60 mb-2' />
-                              <span className='text-xs text-neutral-500'>
-                                No video thumbnail
-                              </span>
-                            </div>
-                          )
-                        ) : (
-                          // For non-image, non-video: show AI image description
-                          <div className='flex flex-col items-center justify-center w-full h-full'>
-                            <Icon className='h-16 w-16 text-orange-400 opacity-60 mb-2' />
-                            <span className='text-xs text-neutral-500 text-center px-2'>
-                              {/* Sample AI image description */}
-                              {resource.title?.rendered
-                                ? `AI-generated image: ${resource.title.rendered}`
-                                : 'AI-generated image: Digital resource illustration'}
-                            </span>
-                          </div>
-                        )}
-                        <div className='absolute top-4 left-4'>
-                          <span
-                            className={`px-3 py-1 rounded-full text-sm font-medium ${getTypeColor(
-                              type
-                            )}`}
-                          >
-                            {type}
-                          </span>
-                        </div>
-                      </div>
-                      {/* Content */}
-                      <div className='p-6'>
-                        <div className='flex items-center space-x-2 mb-4'>
-                          <Icon className='h-5 w-5 text-orange-500' />
-                          <span className='text-sm text-neutral-500'>
-                            {resource.mime_type?.split('/')[1]?.toUpperCase() ||
-                              ''}
-                          </span>
-                        </div>
-                        <h3 className='text-xl font-heading font-semibold text-neutral-900 mb-3'>
-                          {resource.title?.rendered || 'Untitled'}
-                        </h3>
-                        <a
-                          href={resource.source_url}
-                          className='w-full flex items-center justify-center px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors duration-200 mt-4'
-                          download
-                          target='_blank'
-                          rel='noopener noreferrer'
+                      <div className='flex items-center space-x-4'>
+                        <div
+                          className={`p-3 rounded-xl ${category.color} text-white`}
                         >
-                          <Download className='mr-2 h-4 w-4' />
-                          Download
-                        </a>
+                          <Icon className='h-6 w-6' />
+                        </div>
+                        <div>
+                          <h3 className='text-xl font-heading font-semibold text-neutral-900'>
+                            {category.name}
+                          </h3>
+                          <p className='text-sm text-neutral-600'>
+                            {categoryResources.length} resources available
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  )
-                })}
+                      {isExpanded ? (
+                        <ChevronDown className='h-6 w-6 text-neutral-500' />
+                      ) : (
+                        <ChevronRight className='h-6 w-6 text-neutral-500' />
+                      )}
+                    </button>
+
+                    {/* Category Content */}
+                    {isExpanded && (
+                      <div className='bg-white'>
+                        {/* Subcategories for PDF */}
+                        {category.value === 'PDF' &&
+                          category.subcategories.length > 0 && (
+                            <div className='border-t border-neutral-200'>
+                              <div className='px-6 py-4 bg-orange-50'>
+                                <h4 className='text-lg font-heading font-semibold text-neutral-900 mb-3'>
+                                  Browse by Category
+                                </h4>
+                                <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                                  {category.subcategories.map(
+                                    (subcategory, subIndex) => (
+                                      <button
+                                        key={subcategory.value}
+                                        onClick={() =>
+                                          toggleSubcategory(subcategory.value)
+                                        }
+                                        className='flex items-center justify-between p-3 bg-white rounded-lg border border-orange-200 hover:border-orange-300 hover:bg-orange-50 transition-all duration-200 text-left'
+                                      >
+                                        <span className='text-sm font-medium text-neutral-700'>
+                                          {subcategory.name}
+                                        </span>
+                                        {expandedSubcategory ===
+                                        subcategory.value ? (
+                                          <ChevronDown className='h-4 w-4 text-orange-500' />
+                                        ) : (
+                                          <ChevronRight className='h-4 w-4 text-orange-500' />
+                                        )}
+                                      </button>
+                                    )
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                        {/* FAQ Content for FAQs Subcategory */}
+                        {category.value === 'PDF' &&
+                          expandedSubcategory === 'faqs' && (
+                            <div className='border-t border-neutral-200 bg-white'>
+                              <div className='px-6 py-6'>
+                                <h4 className='text-xl font-heading font-semibold text-neutral-900 mb-6'>
+                                  Frequently Asked Questions
+                                </h4>
+                                <div className='space-y-6'>
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      What does EthAgora mean?
+                                    </h5>
+                                    <p className='text-neutral-600 text-sm'>
+                                      Our name—EthAgora—blends "Eth" for
+                                      Ethiopia and "Agora," the ancient Greek
+                                      word for a public gathering space. It
+                                      reflects our vision of creating dynamic
+                                      digital spaces where ideas, people, and
+                                      purpose converge to spark growth and
+                                      transformation.
+                                    </p>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      What services does EthAgora Digital
+                                      Solutions offer?
+                                    </h5>
+                                    <div className='text-neutral-600 text-sm'>
+                                      <p className='mb-2'>
+                                        We provide a unique blend of services
+                                        that combine digital marketing, social
+                                        media management, and behavior change
+                                        communication. Our core offerings
+                                        include:
+                                      </p>
+                                      <ul className='list-disc pl-6 space-y-1'>
+                                        <li>
+                                          Social media strategy & content
+                                          creation
+                                        </li>
+                                        <li>
+                                          Digital campaign planning & execution
+                                        </li>
+                                        <li>
+                                          Data-driven communication and
+                                          analytics
+                                        </li>
+                                        <li>
+                                          Behavioral insights for public health
+                                          & social impact
+                                        </li>
+                                        <li>
+                                          Influencer engagement and online
+                                          community building
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      How is EthAgora different from other
+                                      digital agencies?
+                                    </h5>
+                                    <p className='text-neutral-600 text-sm'>
+                                      EthAgora stands at the intersection of
+                                      creative storytelling, behavioral science,
+                                      and data analytics. Unlike typical
+                                      marketing agencies, we design
+                                      communication that not only sells — but
+                                      inspires change, builds trust, and drives
+                                      social impact.
+                                    </p>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      Who are your typical clients?
+                                    </h5>
+                                    <div className='text-neutral-600 text-sm'>
+                                      <p className='mb-2'>We work with:</p>
+                                      <ul className='list-disc pl-6 space-y-1'>
+                                        <li>
+                                          Businesses looking to grow their
+                                          digital footprint
+                                        </li>
+                                        <li>
+                                          NGOs and development agencies seeking
+                                          social behavior change
+                                        </li>
+                                        <li>
+                                          Health institutions managing public
+                                          health campaigns
+                                        </li>
+                                        <li>
+                                          Startups and personal brands in need
+                                          of digital visibility
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      Do you offer content creation and social
+                                      media management?
+                                    </h5>
+                                    <div className='text-neutral-600 text-sm'>
+                                      <p className='mb-2'>
+                                        Yes! We manage social media pages
+                                        end-to-end, including:
+                                      </p>
+                                      <ul className='list-disc pl-6 space-y-1'>
+                                        <li>
+                                          Content planning and calendar creation
+                                        </li>
+                                        <li>Graphics and video production</li>
+                                        <li>Post scheduling and engagement</li>
+                                        <li>
+                                          Insights reporting and strategy
+                                          refinement
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      How do you use behavior change
+                                      communication (BCC) in your work?
+                                    </h5>
+                                    <p className='text-neutral-600 text-sm'>
+                                      We apply BCC principles to create
+                                      campaigns that address attitudes, norms,
+                                      and behaviors. Whether it's vaccine
+                                      uptake, maternal health, or brand
+                                      perception, our messaging is crafted to
+                                      move people from awareness to action —
+                                      grounded in community realities and human
+                                      psychology.
+                                    </p>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      Can I get a custom package for my business
+                                      or project?
+                                    </h5>
+                                    <p className='text-neutral-600 text-sm'>
+                                      Absolutely. Every client has different
+                                      needs — we offer flexible packages based
+                                      on your goals, target audience, and
+                                      budget. Whether you need one-time campaign
+                                      support or ongoing content management, we
+                                      tailor solutions for impact.
+                                    </p>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      How quickly can you start managing our
+                                      digital presence?
+                                    </h5>
+                                    <p className='text-neutral-600 text-sm'>
+                                      We can typically begin within 1-2 weeks
+                                      after our initial consultation and
+                                      strategy development phase.
+                                    </p>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      What's your process when starting with a
+                                      new client?
+                                    </h5>
+                                    <div className='text-neutral-600 text-sm'>
+                                      <p className='mb-2'>
+                                        Our process includes:
+                                      </p>
+                                      <ol className='list-decimal pl-6 space-y-1'>
+                                        <li>
+                                          Discovery Call – Understand your goals
+                                          and audience
+                                        </li>
+                                        <li>
+                                          Strategy Development – Craft a
+                                          tailored digital or BCC plan
+                                        </li>
+                                        <li>
+                                          Implementation – Roll out content,
+                                          campaigns, and analytics
+                                        </li>
+                                        <li>
+                                          Monitoring & Optimization – Track
+                                          performance and adjust
+                                        </li>
+                                      </ol>
+                                    </div>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      Can you help us manage digital crises or
+                                      misinformation?
+                                    </h5>
+                                    <p className='text-neutral-600 text-sm'>
+                                      Yes, we offer digital crisis communication
+                                      support, especially in public health and
+                                      high-stakes campaigns. From rumor tracking
+                                      to rapid-response messaging, we help
+                                      protect your brand and build community
+                                      trust.
+                                    </p>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      How can I get started with EthAgora?
+                                    </h5>
+                                    <div className='text-neutral-600 text-sm'>
+                                      <p className='mb-2'>
+                                        Getting started is easy!
+                                      </p>
+                                      <div className='space-y-2'>
+                                        <div className='flex items-center gap-2'>
+                                          <svg
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className='h-4 w-4 text-green-500'
+                                            fill='none'
+                                            viewBox='0 0 24 24'
+                                            stroke='currentColor'
+                                          >
+                                            <path
+                                              strokeLinecap='round'
+                                              strokeLinejoin='round'
+                                              strokeWidth={2}
+                                              d='M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm12-12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z'
+                                            />
+                                          </svg>
+                                          <span>
+                                            Just message us "Hi" on WhatsApp at{' '}
+                                            <a
+                                              href='https://wa.me/+251976111222'
+                                              className='text-green-600 underline font-medium'
+                                              target='_blank'
+                                              rel='noopener noreferrer'
+                                            >
+                                              +251 976 111 222
+                                            </a>
+                                          </span>
+                                        </div>
+                                        <div className='flex items-center gap-2'>
+                                          <svg
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className='h-4 w-4 text-orange-500'
+                                            fill='none'
+                                            viewBox='0 0 24 24'
+                                            stroke='currentColor'
+                                          >
+                                            <path
+                                              strokeLinecap='round'
+                                              strokeLinejoin='round'
+                                              strokeWidth={2}
+                                              d='M16 12H8m8 0a4 4 0 11-8 0 4 4 0 018 0zm-8 0V8a4 4 0 018 0v4'
+                                            />
+                                          </svg>
+                                          <span>
+                                            Or email us at{' '}
+                                            <a
+                                              href='mailto:hello@ethagora.com'
+                                              className='text-orange-600 underline font-medium'
+                                            >
+                                              hello@ethagora.com
+                                            </a>
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <p className='mt-2'>
+                                        Let's co-create digital solutions that
+                                        drive results and social impact.
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      Do you work with businesses in our
+                                      industry?
+                                    </h5>
+                                    <p className='text-neutral-600 text-sm'>
+                                      We work with businesses across all
+                                      industries, from tech startups to
+                                      traditional retail, healthcare, and
+                                      professional services.
+                                    </p>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      What's included in your monthly reporting?
+                                    </h5>
+                                    <p className='text-neutral-600 text-sm'>
+                                      Our reports include engagement metrics,
+                                      reach and impressions, conversion rates,
+                                      and ROI analysis with strategic
+                                      recommendations.
+                                    </p>
+                                  </div>
+
+                                  <div className='bg-neutral-50 rounded-lg p-4'>
+                                    <h5 className='font-semibold text-neutral-900 mb-2'>
+                                      Can we maintain control over our digital
+                                      accounts?
+                                    </h5>
+                                    <p className='text-neutral-600 text-sm'>
+                                      Absolutely. You maintain full ownership
+                                      and control of all your digital accounts
+                                      while we manage the day-to-day operations.
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                        {/* Resources Horizontal Layout */}
+                        <div className='p-6'>
+                          <div className='flex flex-wrap gap-4 overflow-x-auto pb-4'>
+                            {categoryResources.map(
+                              (resource, resourceIndex) => {
+                                const { type, icon: ResourceIcon } =
+                                  mimeTypeToType(resource.mime_type || '')
+                                return (
+                                  <div
+                                    key={resource.id || resourceIndex}
+                                    className='bg-white rounded-xl p-4 hover:bg-neutral-50 transition-all duration-200 border border-neutral-200 shadow-sm hover:shadow-md min-w-[280px] flex-shrink-0'
+                                  >
+                                    <div className='flex items-start space-x-3'>
+                                      <div
+                                        className={`p-2 rounded-lg ${getTypeColor(
+                                          type
+                                        )}`}
+                                      >
+                                        <ResourceIcon className='h-5 w-5' />
+                                      </div>
+                                      <div className='flex-1 min-w-0'>
+                                        <h4 className='text-sm font-medium text-neutral-900 mb-1 truncate'>
+                                          {resource.title?.rendered ||
+                                            'Untitled'}
+                                        </h4>
+                                        <p className='text-xs text-neutral-500 mb-3'>
+                                          {resource.mime_type
+                                            ?.split('/')[1]
+                                            ?.toUpperCase() || ''}
+                                        </p>
+                                        <a
+                                          href={resource.source_url}
+                                          className='inline-flex items-center px-3 py-1.5 bg-orange-500 text-white text-xs font-medium rounded-lg hover:bg-orange-600 transition-colors duration-200'
+                                          download
+                                          target='_blank'
+                                          rel='noopener noreferrer'
+                                        >
+                                          <Download className='mr-1 h-3 w-3' />
+                                          Download
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              }
+                            )}
+                          </div>
+
+                          {categoryResources.length === 0 && (
+                            <div className='text-center py-8 text-neutral-500'>
+                              <Icon className='h-12 w-12 mx-auto mb-3 text-neutral-300' />
+                              <p>
+                                No {category.name} resources available at the
+                                moment.
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
             </div>
           )}
         </div>

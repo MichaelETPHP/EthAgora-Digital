@@ -192,9 +192,19 @@ const Services = () => {
                     className={`${service.bgColor} rounded-2xl p-8 shadow-lg`}
                   >
                     <img
-                      src='https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800'
+                      src={
+                        index === 0
+                          ? '/img/Digital Marketing and Brand Strategy.jpg'
+                          : index === 1
+                          ? '/img/Public Health.jpg'
+                          : index === 2
+                          ? '/img/Strategic communication.jpg'
+                          : index === 3
+                          ? '/img/Digital Campaign.jpg'
+                          : 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800'
+                      }
                       alt={service.title}
-                      className='w-full h-64 object-cover rounded-lg'
+                      className='w-full rounded-lg'
                     />
                   </div>
                 </div>

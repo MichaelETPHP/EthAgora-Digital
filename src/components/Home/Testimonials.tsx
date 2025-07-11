@@ -57,28 +57,37 @@ const Testimonials = () => {
         </div>
 
         {/* Featured Testimonials */}
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20 items-stretch'>
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className='group relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden animate-fade-in-up'
+              className='group relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden animate-fade-in-up flex flex-col justify-between h-full'
               style={{ animationDelay: `${index * 0.2}s` }}
             >
               {/* Orange accent stripe */}
-              <div className='absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-orange-500 to-orange-600'></div>
+              <div
+                className='absolute top-0 left-0 right-0 h-2'
+                style={{ backgroundColor: '#f6971f' }}
+              ></div>
 
-              <div className='p-8 lg:p-10'>
+              <div className='p-8 lg:p-10 flex flex-col justify-between h-full'>
                 {/* Quote Icon */}
                 <div className='flex justify-between items-start mb-6'>
-                  <div className='bg-orange-100 p-3 rounded-2xl'>
-                    <Quote className='h-6 w-6 text-orange-600' />
+                  <div
+                    className='p-3 rounded-2xl'
+                    style={{ backgroundColor: '#f6971f22' }}
+                  >
+                    <Quote className='h-6 w-6' style={{ color: '#f6971f' }} />
                   </div>
                   <div className='flex items-center gap-3'>
                     <div className='bg-neutral-100 p-2 rounded-xl'>
                       <testimonial.icon className='h-5 w-5 text-neutral-700' />
                     </div>
                     <div className='text-right'>
-                      <div className='text-2xl font-bold text-orange-600'>
+                      <div
+                        className='text-2xl font-bold'
+                        style={{ color: '#f6971f' }}
+                      >
                         {testimonial.stats.metric}
                       </div>
                       <div className='text-sm text-neutral-600'>
@@ -104,17 +113,21 @@ const Testimonials = () => {
                 </p>
 
                 {/* Company */}
-                <div className='flex items-center space-x-4 pt-6 border-t border-neutral-100'>
+                <div className='flex items-end space-x-4 pt-6 pb-2 border-t border-neutral-100 mt-auto'>
                   <img
                     src={testimonial.image}
                     alt={testimonial.company}
-                    className='w-16 h-16 rounded-2xl object-cover'
+                    className='w-16 h-16 rounded-full object-cover border-2 border-[#f6971f] transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg'
+                    style={{ aspectRatio: '1/1' }}
                   />
-                  <div>
+                  <div className='flex flex-col justify-end'>
                     <div className='font-bold text-xl text-neutral-900'>
                       {testimonial.company}
                     </div>
-                    <div className='text-sm text-orange-600 font-medium'>
+                    <div
+                      className='text-sm font-medium'
+                      style={{ color: '#f6971f' }}
+                    >
                       Valued Partner
                     </div>
                   </div>
@@ -126,8 +139,14 @@ const Testimonials = () => {
 
         {/* Stats Section */}
         <div className='relative'>
-          <div className='absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl transform rotate-1'></div>
-          <div className='relative bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl p-12 text-white'>
+          <div
+            className='absolute inset-0 rounded-3xl transform rotate-1'
+            style={{ backgroundColor: '#f6971f' }}
+          ></div>
+          <div
+            className='relative rounded-3xl p-12 text-white'
+            style={{ backgroundColor: '#f6971f' }}
+          >
             <h3 className='text-3xl font-heading font-bold text-center mb-12'>
               Our Impact in Numbers
             </h3>
@@ -144,7 +163,7 @@ const Testimonials = () => {
                     <div className='text-4xl lg:text-5xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300'>
                       {stat.number}
                     </div>
-                    <div className='text-orange-100 font-medium'>
+                    <div className='font-medium' style={{ color: '#fff' }}>
                       {stat.label}
                     </div>
                   </div>
@@ -156,12 +175,12 @@ const Testimonials = () => {
 
         {/* Additional Testimonials Preview */}
         <div className='mt-20 text-center'>
-          <p className='text-lg text-neutral-600 mb-8'>
+          {/* <p className='text-lg text-neutral-600 mb-8'>
             Join the growing list of businesses experiencing digital
             transformation with EthAgora
-          </p>
+          </p> */}
 
-          <div className='flex flex-wrap justify-center items-center gap-8 opacity-60'>
+          {/* <div className='flex flex-wrap justify-center items-center gap-8 opacity-60'>
             {[
               'Tech Solutions Ltd',
               'Global Enterprises',
@@ -173,11 +192,17 @@ const Testimonials = () => {
                 {company}
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
 
         {/* CTA Section */}
         <div className='mt-20 text-center bg-orange-50 rounded-3xl p-12'>
+          <img
+            src={testimonials[0].image}
+            alt={testimonials[0].company}
+            className='w-16 h-16 rounded-full object-cover border-2 border-black mx-auto mb-4 bg-white'
+            style={{ aspectRatio: '1/1' }}
+          />
           <h3 className='text-3xl font-heading font-bold text-neutral-900 mb-4'>
             Ready to Be Our Next Success Story?
           </h3>
@@ -185,7 +210,10 @@ const Testimonials = () => {
             Let's work together to transform your digital presence and achieve
             remarkable results.
           </p>
-          <button className='inline-flex items-center px-8 py-4 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-all duration-200 transform hover:scale-105 shadow-lg'>
+          <button
+            className='inline-flex items-center px-8 py-4 font-semibold rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg'
+            style={{ backgroundColor: '#f6971f', color: '#fff' }}
+          >
             Start Your Journey
             <svg
               className='ml-2 h-5 w-5'

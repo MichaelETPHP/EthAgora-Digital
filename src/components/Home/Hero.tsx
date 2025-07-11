@@ -26,7 +26,10 @@ const Hero = () => {
         {/* Multiple gradient overlays for depth */}
         <div className='absolute inset-0 bg-gradient-to-br from-orange-900/80 via-orange-800/70 to-orange-900/80'></div>
         <div className='absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent'></div>
-        <div className='absolute inset-0 bg-gradient-to-r from-orange-600/85 via-orange-500/75 to-orange-700/85'></div>
+        <div
+          className='absolute inset-0'
+          style={{ backgroundColor: '#f6971f', opacity: 0.85 }}
+        ></div>
       </div>
 
       {/* Animated Background Elements */}
@@ -67,24 +70,112 @@ const Hero = () => {
       <div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 z-10'>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
           {/* Content */}
-          <div className='text-center lg:text-left animate-fade-in-up'>
-            <div className='inline-flex items-center px-6 py-3 bg-white/20 backdrop-blur-md rounded-full text-white text-sm font-medium mb-8 border border-white/30 hover:bg-white/30 transition-all duration-300 shadow-glass'>
+          <div
+            className='text-center lg:text-left animate-fade-in-up hero-heading-animate'
+            id='hero-heading-section'
+          >
+            <div className='inline-flex items-center px-6 py-3 bg-white/20 backdrop-blur-md rounded-full text-white text-sm font-medium mb-4 border border-white/30 hover:bg-white/30 transition-all duration-300 shadow-glass'>
               <Sparkles className='h-4 w-4 mr-2' />
-              #1 Digital Solutions Agency
+              Smart Solutions for a Digital World
               <Star className='h-4 w-4 ml-2 text-yellow-300' />
             </div>
 
-            <h1 className='text-4xl lg:text-6xl font-heading font-bold text-white leading-tight mb-8'>
-              Empower Your Brand with <br />
-              <span className='text-5xl lg:text-7xl bg-gradient-to-r from-orange-300 via-orange-400 to-orange-500 bg-clip-text text-transparent animate-gradient font-black'>
-                EthAgora Digital
+            <h1 className='text-center mb-8' style={{ width: '100%' }}>
+              <div className='block w-full text-left'>
+                <span
+                  className='text-4xl font-heading font-extrabold tracking-tight hero-slide-in hero-scroll-in'
+                  id='hero-title-ethagora'
+                  style={{
+                    color: '#222',
+                    fontWeight: 800,
+                    fontSize: '66px',
+                    lineHeight: '4.5rem',
+                    display: 'inline-block',
+                    animation: 'heroSlideIn 0.8s cubic-bezier(.4,2,.6,1) both',
+                  }}
+                >
+                  EthAgora
+                </span>
+                <br />
+                <span
+                  className='text-4xl font-heading font-extrabold tracking-tight hero-slide-in hero-scroll-in'
+                  id='hero-title-solutions'
+                  style={{
+                    color: '#222',
+                    fontWeight: 800,
+                    fontSize: '66px',
+                    lineHeight: '4.5rem',
+                    display: 'inline-block',
+                    animation: 'heroSlideIn 0.8s cubic-bezier(.4,2,.6,1) both',
+                    animationDelay: '0.15s',
+                  }}
+                >
+                  DIGITAL SOLUTIONS
+                </span>
+              </div>
+              <style>{`
+                @keyframes heroSlideIn {
+                  0% { opacity: 0; transform: translateX(-80px); }
+                  100% { opacity: 1; transform: translateX(0); }
+                }
+                .hero-slide-in {
+                  animation: heroSlideIn 0.8s cubic-bezier(.4,2,.6,1) both;
+                }
+                @keyframes heroScrollIn {
+                  0% { opacity: 0; transform: translateY(60px); }
+                  100% { opacity: 1; transform: translateY(0); }
+                }
+                .hero-scroll-in {
+                  will-change: opacity, transform;
+                }
+                .hero-heading-animate {
+                  animation: heroScrollIn 1.2s cubic-bezier(.4,2,.6,1) both;
+                }
+              `}</style>
+              <script>{`
+                // IntersectionObserver for scroll-triggered animation
+                document.addEventListener('DOMContentLoaded', function() {
+                  const titles = [
+                    document.getElementById('hero-title-ethagora'),
+                    document.getElementById('hero-title-solutions')
+                  ];
+                  const observer = new window.IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                      if (entry.isIntersecting) {
+                        entry.target.classList.add('hero-slide-in');
+                      } else {
+                        entry.target.classList.remove('hero-slide-in');
+                      }
+                    });
+                  }, { threshold: 0.5 });
+                  titles.forEach(el => { if (el) observer.observe(el); });
+                });
+              `}</script>
+              {/* Pro Suggestion: For scroll animation, you can use IntersectionObserver to add/remove the .hero-scroll-in class on headings as they enter the viewport for a true scroll effect. For now, this applies on load. */}
+              {/* Pro Suggestion: */}
+              {/* For even more impact, consider adding a subtle text-shadow to the heading for depth, and a fade-in animation for the first load. Example: */}
+              {/* style={{ textShadow: '0 2px 12px rgba(246,151,31,0.15)' }} */}
+              <span
+                className='block mt-4 text-xl lg:text-2xl font-medium tracking-wide'
+                style={{ textAlign: 'left', color: '#fff' }}
+              >
+                Empower Your Brand and Services with EthAgora Digital Solutions
               </span>
+              <br />
+              <p
+                className='mt-2 text-lg lg:text-xl font-normal tracking-wide text-white'
+                style={{ textAlign: 'left' }}
+              >
+                Drive engagement, build communities, and grow your brand and
+                services with our comprehensive digital solutions that deliver
+                measurable results.
+              </p>
             </h1>
 
-            <p className='text-xl text-white/90 leading-relaxed mb-10 max-w-lg mx-auto lg:mx-0'>
+            {/* <p className='text-xl text-white/90 leading-relaxed mb-10 max-w-lg mx-auto lg:mx-0'>
               Drive engagement, build communities, and grow your brand with our
               comprehensive digital solutions that deliver measurable results.
-            </p>
+            </p> */}
 
             <div className='flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 mb-12 justify-center lg:justify-start'>
               <Link

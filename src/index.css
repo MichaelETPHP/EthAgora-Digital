@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* HiroLight Bold Font Face */
+@font-face {
+  font-family: 'HiroLight';
+  src: url('/fonts/HeroLight-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 /* Logo Loader Styles */
 .logo-loader-overlay {
   position: fixed;
@@ -9,7 +17,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
+  background: linear-gradient(135deg, #f6971f 0%, #f6971f 50%, #f6971f 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,7 +111,7 @@
   transform: translate(-50%, -50%);
   width: 20px;
   height: 20px;
-  background: #f97316;
+  background: #f6971f;
   border-radius: 4px;
 }
 
