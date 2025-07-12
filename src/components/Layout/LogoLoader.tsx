@@ -197,7 +197,7 @@ const LogoLoader: React.FC<LogoLoaderProps> = ({ onLoadComplete }) => {
               animation: 'ethagora-gradient-move 3s ease-in-out infinite',
             }}
           >
-            EthAgora Digital
+            EthAgora DIGITAL SOLUTIONS
           </h1>
           <style>{`
             @keyframes ethagora-gradient-move {
