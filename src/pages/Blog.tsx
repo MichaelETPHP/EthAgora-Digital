@@ -73,7 +73,7 @@ const Blog = () => {
     try {
       setLoading(true)
       const response = await fetch(
-        `https://ethagoradigital.com/wp-json/wp/v2/posts?page=${currentPage}&per_page=${postsPerPage}&_embed=true`
+        `https://ethagoradigital.com/eth_agora/wp-json/wp/v2/posts?page=${currentPage}&per_page=${postsPerPage}&_embed=true`
       )
 
       if (!response.ok) {
