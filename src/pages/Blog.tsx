@@ -418,11 +418,12 @@ const Blog = () => {
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     {/* Image */}
-                    <div className='relative h-48 overflow-hidden'>
+                    <div className='relative'>
                       <img
                         src={getFeaturedImage(post)}
                         alt={stripHtml(post.title.rendered)}
-                        className='w-full h-full object-cover transition-transform duration-300 hover:scale-105'
+                        className='w-full object-contain max-h-64 bg-neutral-100 transition-transform duration-300 hover:scale-105' // Show full image, not cropped
+                        style={{ maxHeight: '16rem' }}
                       />
                       <div className='absolute top-4 left-4'>
                         {getCategories(post)
@@ -444,7 +445,10 @@ const Blog = () => {
                       <div className='flex items-center space-x-4 text-sm text-neutral-500 mb-3'>
                         <div className='flex items-center space-x-1'>
                           <User className='h-3 w-3' />
-                          <span>{getAuthorName(post)}</span>
+                          <span style={{ textTransform: 'capitalize' }}>
+                            {getAuthorName(post)}
+                          </span>{' '}
+                          {/* Capitalize author name */}
                         </div>
                         <div className='flex items-center space-x-1'>
                           <Calendar className='h-3 w-3' />
