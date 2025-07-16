@@ -12,6 +12,16 @@
   ],
   "rewrites": [
     {
+      "source": "/(.*)",
+      "destination": "https://www.ethagoradigital.com/eth_agora/$1",
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.ethagoradigital.com"
+        }
+      ]
+    },
+    {
       "source": "/sitemap.xml",
       "destination": "/sitemap.xml"
     },
